@@ -15,14 +15,16 @@ server.listen(port, () => {
     iniciarBot();
 });
 
-const { BLUESKY_USERNAME, BLUESKY_PASSWORD } = process.env;
 
 const agent = new BskyAgent({
     service: 'https://bsky.social',
   })
 
 
-async function main() {
+async function iniciarBot() {
+
+    const { BLUESKY_USERNAME, BLUESKY_PASSWORD } = process.env;
+
     try {
         
         await agent.login({ identifier: BLUESKY_USERNAME, password: BLUESKY_PASSWORD})
