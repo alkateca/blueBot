@@ -1,0 +1,17 @@
+{
+  "name": "botblue",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@atproto/api": "^0.18.14",
+    "dotenv": "^17.2.3"
+  }
+}
