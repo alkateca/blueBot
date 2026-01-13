@@ -29,7 +29,7 @@ async function iniciarBot() {
     }
 }
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 const server = http.createServer((req, res) => {
     res.writeHead(200);
