@@ -1,7 +1,19 @@
 import { BskyAgent } from '@atproto/api';
 import * as dotenv from 'dotenv';
+import http from 'http';
 
 dotenv.config();
+
+const port = process.env.PORT || 8080;
+const server = http.createServer((req, res) => {
+    res.writeHead(200);
+    res.end('O Bot esta rodando (ou tentando)!');
+});
+
+server.listen(port, () => {
+    console.log(`Servidor web rodando na porta ${port}`);
+    iniciarBot();
+});
 
 const { BLUESKY_USERNAME, BLUESKY_PASSWORD } = process.env;
 
