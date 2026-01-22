@@ -89,4 +89,4 @@ pm2 start ecosystem.config.js
 
 - Dockerfile: Instruções para o build do container baseado em node:20-slim.
 
-- .gitignore: Define os arquivos e pastas que não devem ser rastreados pelo Git, como segredos e arquivos temporários.
+- gitignore: Define os arquivos e pastas que não devem ser rastreados pelo Git, como segredos e arquivos temporários.
