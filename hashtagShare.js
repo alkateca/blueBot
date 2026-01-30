@@ -7,7 +7,6 @@ const agent = new BskyAgent({
   });
 
 
-// Conjunto para armazenar IDs de posts já repostados (em produção, use um arquivo ou banco de dados)
 const repostedCache = new Set();
 
 async function botRepostByHashtag(hashtag) {
