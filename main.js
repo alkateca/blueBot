@@ -29,13 +29,13 @@ function getHistory() {
 // function para salvar novos links no histórico (Lógica LIFO - limite de 25 itens)
 function saveToHistory(link) {
     let history = getHistory();
-    
+
     history.unshift(link);
-    
+
     if (history.length > 25) {
         history = history.slice(0, 25);
     }
-    
+
     fs.writeFileSync(historyPath, JSON.stringify(history, null, 2));
 }
 
@@ -69,7 +69,7 @@ async function get_random_galleries(base_url){
 
             const shuffled = links.sort(() => 0.5 - Math.random());
             const selected = shuffled.slice(0, 4);
-            
+
             return selected;
         })
         .catch(err => {
@@ -84,9 +84,8 @@ async function gallery_infos(link) {
         .then(response => {
             const html = response.data;
             const $ = cheerio.load(html);
-            const artist_name = $('.tc:contains("artist:")').next().text().trim();
+            const artist_name = $('.tc:contains("artist:"), .tc:contains("cosplayer:")').next().text().trim();            
             let titleName = $('h1').first().text().trim();
-
             if (titleName.length > 300) {
                 titleName = titleName.substring(0, 230) + " (...)";
             }
@@ -128,7 +127,7 @@ async function download_image(imagem_url){
         });
 
         image_response.data.pipe(writer);
-                
+
         return new Promise((resolve, reject) => {
             writer.on('finish', resolve);
             writer.on('error', reject);
@@ -157,13 +156,13 @@ async function main() {
             const uploadedImage = await agent.uploadBlob(imageBytes, { encoding: 'image/jpeg' });
 
             const cleanedTitle = info.title
-                .replace(/\[[^\]]*\]/g, '') 
+                .replace(/\[[^\]]*\]/g, '')
                 .replace(/\([^)]*\)/g, '')
-                .replace(/[\[\]\(\)]/g, '') 
-                .replace(/\s+/g, ' ') 
+                .replace(/[\[\]\(\)]/g, '')
+                .replace(/\s+/g, ' ')
                 .trim();
-            
-            const postText = `Title: ${cleanedTitle}\nArtist: ${info.artist}\n ${process.env.POST_HASHTAG}`;
+
+            const postText = `Title: ${cleanedTitle}\n${info.artist ? `Artist: ${info.artist}\n` : ""}${process.env.POST_HASHTAG}`;              
             const rt = new RichText({ text: postText });
             const dimensions = probe.sync(imageBytes);
             await rt.detectFacets(agent);
@@ -180,18 +179,18 @@ async function main() {
                             image: uploadedImage.data.blob,
                             alt: `${info.title} by ${info.artist}`,
                             aspectRatio: {
-                                width: dimensions.width, 
+                                width: dimensions.width,
                                 height: dimensions.height
-                            }        
+                            }
                         },
                     ],
                 },
             };
 
             await agent.post(postRecord);
-            saveToHistory(link); 
+            saveToHistory(link);
             console.log(`Post de "${cleanedTitle}" realizado com sucesso!`);
-            
+
         } catch (error) {
             console.error("Erro ao processar post:", error);
         }
